@@ -7,12 +7,6 @@ import (
 	"net/http"
 )
 
-func pingHandler(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "pong",
-	})
-}
-
 func todoGetHandler(c *gin.Context, db TodoDbAdapter) {
 	todos, err := db.GetAll()
 	if err != nil {

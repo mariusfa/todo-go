@@ -8,7 +8,7 @@ import (
 )
 
 func TestPingRoute(t *testing.T) {
-	mockDb := MockTodoDbAdapter{}
+	mockDb := NewMockTodoDbAdapter()
 	router := setupRouter(mockDb)
 
 	response := httptest.NewRecorder()
@@ -24,26 +24,8 @@ func TestPingRoute(t *testing.T) {
 	}
 }
 
-type MockTodoDbAdapter struct {
-}
-
-var todoList = []Todo{
-	Todo{Task: "Task 1"},
-	Todo{Task: "Task 2"},
-	Todo{Task: "Task 3"},
-}
-
-func (m MockTodoDbAdapter) GetAll() ([]Todo, error) {
-	return todoList, nil
-}
-
-func (m MockTodoDbAdapter) Insert(task string) error {
-	todoList = append(todoList, Todo{Task: task})
-	return nil
-}
-
 func TestTodoGetRoute(t *testing.T) {
-	mockDb := MockTodoDbAdapter{}
+	mockDb := NewMockTodoDbAdapter()
 	router := setupRouter(mockDb)
 
 	response := httptest.NewRecorder()
@@ -60,7 +42,7 @@ func TestTodoGetRoute(t *testing.T) {
 }
 
 func TestTodoPostRoute(t *testing.T) {
-	mockDb := MockTodoDbAdapter{}
+	mockDb := NewMockTodoDbAdapter()
 	router := setupRouter(mockDb)
 
 	requestBody := strings.NewReader(`{"task": "Task 4"}`)
@@ -72,8 +54,7 @@ func TestTodoPostRoute(t *testing.T) {
 	if response.Code != http.StatusCreated {
 		t.Errorf("Response code is %v", response.Code)
 	}
-	if len(todoList) != 4 {
-		t.Errorf("Todo list length is %v", len(todoList))
+	if len(mockDb.todoList) != 4 {
+		t.Errorf("Todo list length is %v", len(mockDb.todoList))
 	}
-
 }
