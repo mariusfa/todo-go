@@ -8,34 +8,16 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var todoList = []string{
-	"Task 1",
-	"Task 2",
-	"Task 3",
-}
-
 func pingHandler(c *gin.Context) {
     c.JSON(http.StatusOK, gin.H{
         "message": "pong",
     })
 }
 
-func todoGetHandler(c *gin.Context, db DbInstance) {
-	rows, err := db.Query("SELECT task FROM todos")
+func todoGetHandler(c *gin.Context, db TodoDbAdapter) {
+	todos, err := db.GetAll()
 	if err != nil {
 		panic(err)
-	}
-	defer rows.Close()
-
-	var todos []Todo
-
-	for rows.Next() {
-		var todo Todo
-		err := rows.Scan(&todo.Task)
-		if err != nil {
-			panic(err)
-		}
-		todos = append(todos, todo)
 	}
 	c.JSON(http.StatusOK, todos)
 }
@@ -44,7 +26,7 @@ type Todo struct {
 	Task string `json:"task"`
 }
 
-func todoPostHandler(c *gin.Context, db DbInstance) {
+func todoPostHandler(c *gin.Context, db TodoDbAdapter) {
 	var todo Todo
 	if err := c.ShouldBindJSON(&todo); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -52,11 +34,11 @@ func todoPostHandler(c *gin.Context, db DbInstance) {
 		})
 		return
 	}
-	db.Exec("INSERT INTO todos (task) VALUES ($1)", todo.Task)
+	db.Insert(todo.Task)
 	c.Status(http.StatusCreated)
 }
 
-func setupRouter(db DbInstance) *gin.Engine {
+func setupRouter(db TodoDbAdapter) *gin.Engine {
 	router := gin.Default()
 	router.GET("/ping", pingHandler)
 	router.GET("/todo", func(c *gin.Context) {
@@ -89,26 +71,48 @@ func setupDB() *sql.DB {
 	return db
 }
 
-type DbInstance interface {
-	Exec(string, ...interface{}) (sql.Result, error)
-	Query(string, ...interface{}) (*sql.Rows, error)
-	Close() error
-}
-
 type TodoDbAdapter interface {
 	Insert(string) error
 	GetAll() ([]Todo, error)
 }
 
 
+type TodoDb struct {
+	db *sql.DB
+}
+
+func (db *TodoDb) Insert(task string) error {
+	_, err := db.db.Exec("INSERT INTO todos (task) VALUES ($1)", task)
+	return err
+}
+
+func (db *TodoDb) GetAll() ([]Todo, error) {
+	rows, err := db.db.Query("SELECT task FROM todos")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var todos []Todo
+
+	for rows.Next() {
+		var todo Todo
+		err := rows.Scan(&todo.Task)
+		if err != nil {
+			return nil, err
+		}
+		todos = append(todos, todo)
+	}
+	return todos, nil
+}
 
 
 func main() {
-	var db DbInstance
-	db = setupDB()
+	db := setupDB()
 	db.Exec("CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, task VARCHAR NOT NULL)")
-
 	defer db.Close()
-	router := setupRouter(db)
+
+	todoAdapter := &TodoDb{db: db}
+	router := setupRouter(todoAdapter)
 	router.Run()
 }
