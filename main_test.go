@@ -3,8 +3,8 @@ package main
 import (
 	"net/http"
 	"net/http/httptest"
-	"testing"
 	"strings"
+	"testing"
 )
 
 func TestPingRoute(t *testing.T) {
@@ -41,7 +41,6 @@ func (m MockTodoDbAdapter) Insert(task string) error {
 	todoList = append(todoList, Todo{Task: task})
 	return nil
 }
-
 
 func TestTodoGetRoute(t *testing.T) {
 	mockDb := MockTodoDbAdapter{}

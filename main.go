@@ -1,17 +1,16 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"net/http"
-	"fmt"
 	"database/sql"
+	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
+	"net/http"
 )
 
 func pingHandler(c *gin.Context) {
-    c.JSON(http.StatusOK, gin.H{
-        "message": "pong",
-    })
+	c.JSON(http.StatusOK, gin.H{
+		"message": "pong",
+	})
 }
 
 func todoGetHandler(c *gin.Context, db TodoDbAdapter) {
@@ -50,32 +49,10 @@ func setupRouter(db TodoDbAdapter) *gin.Engine {
 	return router
 }
 
-const (
-	host = "localhost"
-	port = 5432
-	user = "postgres"
-	password = "password"
-	dbname = "postgres"
-)
-
-func setupDB() *sql.DB {
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
-
-	db, err := sql.Open("postgres", psqlInfo)
-	if err != nil {
-		panic(err)
-	}
-
-	return db
-}
-
 type TodoDbAdapter interface {
 	Insert(string) error
 	GetAll() ([]Todo, error)
 }
-
 
 type TodoDb struct {
 	db *sql.DB
@@ -105,7 +82,6 @@ func (db *TodoDb) GetAll() ([]Todo, error) {
 	}
 	return todos, nil
 }
-
 
 func main() {
 	db := setupDB()
