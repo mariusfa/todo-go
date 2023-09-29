@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 )
@@ -10,34 +11,34 @@ type Todo struct {
 	Task string `json:"task"`
 }
 
-func setupRouter(db TodoDbAdapter) *gin.Engine {
+func setupRouter(todoRepository TodoRepositoryContract) *gin.Engine {
 	router := gin.Default()
 	router.GET("/ping", pingHandler)
 	router.GET("/todo", func(c *gin.Context) {
-		todoGetHandler(c, db)
+		todoGetHandler(c, todoRepository)
 	})
 	router.POST("/todo", func(c *gin.Context) {
-		todoPostHandler(c, db)
+		todoPostHandler(c, todoRepository)
 	})
 	return router
 }
 
-type TodoDbAdapter interface {
+type TodoRepositoryContract interface {
 	Insert(string) error
 	GetAll() ([]Todo, error)
 }
 
-type TodoDb struct {
+type TodoRepository struct {
 	db *sql.DB
 }
 
-func (db *TodoDb) Insert(task string) error {
-	_, err := db.db.Exec("INSERT INTO todos (task) VALUES ($1)", task)
+func (todoRepository *TodoRepository) Insert(task string) error {
+	_, err := todoRepository.db.Exec("INSERT INTO todos (task) VALUES ($1)", task)
 	return err
 }
 
-func (db *TodoDb) GetAll() ([]Todo, error) {
-	rows, err := db.db.Query("SELECT task FROM todos")
+func (todoRepository *TodoRepository) GetAll() ([]Todo, error) {
+	rows, err := todoRepository.db.Query("SELECT task FROM todos")
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +62,7 @@ func main() {
 	db.Exec("CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, task VARCHAR NOT NULL)")
 	defer db.Close()
 
-	todoAdapter := &TodoDb{db: db}
-	router := setupRouter(todoAdapter)
+	todoRepository := &TodoRepository{db: db}
+	router := setupRouter(todoRepository)
 	router.Run()
 }

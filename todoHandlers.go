@@ -1,19 +1,20 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-func todoGetHandler(c *gin.Context, db TodoDbAdapter) {
-	todos, err := db.GetAll()
+func todoGetHandler(c *gin.Context, todoRepository TodoRepositoryContract) {
+	todos, err := todoRepository.GetAll()
 	if err != nil {
 		panic(err)
 	}
 	c.JSON(http.StatusOK, todos)
 }
 
-func todoPostHandler(c *gin.Context, db TodoDbAdapter) {
+func todoPostHandler(c *gin.Context, todoRepository TodoRepositoryContract) {
 	var todo Todo
 	if err := c.ShouldBindJSON(&todo); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -21,6 +22,6 @@ func todoPostHandler(c *gin.Context, db TodoDbAdapter) {
 		})
 		return
 	}
-	db.Insert(todo.Task)
+	todoRepository.Insert(todo.Task)
 	c.Status(http.StatusCreated)
 }

@@ -8,8 +8,8 @@ import (
 )
 
 func TestPingRoute(t *testing.T) {
-	mockDb := NewMockTodoDbAdapter()
-	router := setupRouter(mockDb)
+	todoRepository := NewTodoRepositoryFake()
+	router := setupRouter(todoRepository)
 
 	response := httptest.NewRecorder()
 	request, _ := http.NewRequest("GET", "/ping", nil)
@@ -25,8 +25,8 @@ func TestPingRoute(t *testing.T) {
 }
 
 func TestTodoGetRoute(t *testing.T) {
-	mockDb := NewMockTodoDbAdapter()
-	router := setupRouter(mockDb)
+	todoRepository := NewTodoRepositoryFake()
+	router := setupRouter(todoRepository)
 
 	response := httptest.NewRecorder()
 	request, _ := http.NewRequest("GET", "/todo", nil)
@@ -42,8 +42,8 @@ func TestTodoGetRoute(t *testing.T) {
 }
 
 func TestTodoPostRoute(t *testing.T) {
-	mockDb := NewMockTodoDbAdapter()
-	router := setupRouter(mockDb)
+	todoRepository := NewTodoRepositoryFake()
+	router := setupRouter(todoRepository)
 
 	requestBody := strings.NewReader(`{"task": "Task 4"}`)
 	response := httptest.NewRecorder()
@@ -54,7 +54,7 @@ func TestTodoPostRoute(t *testing.T) {
 	if response.Code != http.StatusCreated {
 		t.Errorf("Response code is %v", response.Code)
 	}
-	if len(mockDb.todoList) != 4 {
-		t.Errorf("Todo list length is %v", len(mockDb.todoList))
+	if len(todoRepository.todoList) != 4 {
+		t.Errorf("Todo list length is %v", len(todoRepository.todoList))
 	}
 }

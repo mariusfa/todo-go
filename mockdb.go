@@ -1,24 +1,24 @@
 package main
 
-type MockTodoDbAdapter struct {
+type TodoRepositoryFake struct {
 	todoList []Todo
 }
 
-func NewMockTodoDbAdapter() *MockTodoDbAdapter {
-	return &MockTodoDbAdapter{
+func NewTodoRepositoryFake() *TodoRepositoryFake {
+	return &TodoRepositoryFake{
 		todoList: []Todo{
-			Todo{Task: "Task 1"},
-			Todo{Task: "Task 2"},
-			Todo{Task: "Task 3"},
+			{Task: "Task 1"},
+			{Task: "Task 2"},
+			{Task: "Task 3"},
 		},
 	}
 }
 
-func (m *MockTodoDbAdapter) GetAll() ([]Todo, error) {
-	return m.todoList, nil
+func (todoRepository *TodoRepositoryFake) GetAll() ([]Todo, error) {
+	return todoRepository.todoList, nil
 }
 
-func (m *MockTodoDbAdapter) Insert(task string) error {
-	m.todoList = append(m.todoList, Todo{Task: task})
+func (todoRepository *TodoRepositoryFake) Insert(task string) error {
+	todoRepository.todoList = append(todoRepository.todoList, Todo{Task: task})
 	return nil
 }
