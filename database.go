@@ -3,6 +3,8 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"os"
+	"strconv"
 
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
@@ -11,17 +13,52 @@ import (
 )
 
 const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "password"
-	dbname   = "postgres"
+	defaultHost     = "localhost"
+	defaultPort     = 5432
+	defaultUser     = "postgres"
+	defaultPassword = "password"
+	defaultDBName   = "postgres"
 )
 
-func setupDB() *sql.DB {
+type DBConfig struct {
+	Host     string
+	Port     int
+	User     string
+	Password string
+	DBName   string
+}
+
+func getDBConfig() DBConfig {
+	return DBConfig{
+		Host:     getEnv("DB_HOST", defaultHost),
+		Port:     getEnvAsInt("DB_PORT", defaultPort),
+		User:     getEnv("DB_USER", defaultUser),
+		Password: getEnv("DB_PASSWORD", defaultPassword),
+		DBName:   getEnv("DB_NAME", defaultDBName),
+	}
+}
+
+func getEnv(key string, defaultValue string) string {
+	value := os.Getenv(key)
+	if value == "" {
+		return defaultValue
+	}
+	return value
+}
+
+func getEnvAsInt(key string, defaultValue int) int {
+	valueStr := os.Getenv(key)
+	if value, err := strconv.Atoi(valueStr); err == nil {
+		return value
+	}
+	return defaultValue
+}
+
+func SetupDB() *sql.DB {
+	dbConfig := getDBConfig()
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
+		dbConfig.Host, dbConfig.Port, dbConfig.User, dbConfig.Password, dbConfig.DBName)
 
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
@@ -31,8 +68,11 @@ func setupDB() *sql.DB {
 	return db
 }
 
-func migrateDB() {
-	connectionString := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable", user, password, host, port, dbname)
+func MigrateDB() {
+	dbConfig := getDBConfig()
+	connectionString := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable", dbConfig.User,
+		dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.DBName)
+
 	m, err := migrate.New("file://migrations", connectionString)
 	if err != nil {
 		panic(err)

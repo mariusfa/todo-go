@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"todo/biz/todo"
 	pingController "todo/rest/ping/controller"
 	todoController "todo/rest/todo/controller"
-	"todo/biz/todo"
+
+	"github.com/gin-gonic/gin"
 
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -23,12 +24,11 @@ func setupRouter(todoRepository todo.TodoRepositoryContract) *gin.Engine {
 }
 
 func main() {
-	db := setupDB()
+	db := SetupDB()
 	// db.Exec("CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, task VARCHAR NOT NULL)")
 	defer db.Close()
 
-	migrateDB()
-
+	MigrateDB()
 
 	todoRepository := todo.NewTodoRepository(db)
 	router := setupRouter(todoRepository)
