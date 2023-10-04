@@ -25,7 +25,6 @@ func setupRouter(todoRepository todo.TodoRepositoryContract) *gin.Engine {
 
 func main() {
 	db := SetupDB()
-	// db.Exec("CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, task VARCHAR NOT NULL)")
 	defer db.Close()
 
 	MigrateDB()
