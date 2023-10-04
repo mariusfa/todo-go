@@ -1,11 +1,11 @@
-package main
+package controller
 
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
-func pingHandler(c *gin.Context) {
+func GetPong(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "pong",
 	})
