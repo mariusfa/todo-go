@@ -2,14 +2,18 @@ package main
 
 import (
 	bizSetup "todo/biz/setup"
+	"todo/config"
+	"todo/database"
 	restSetup "todo/rest/setup"
 )
 
 func main() {
-	db := SetupDB()
-	defer db.Close()
+	database.Migrate(config.GetMigrationDbConfig(), "./migrations")
 
-	MigrateDB()
+	db, err := database.SetupDb(config.GetAppDbConfig())
+	if err != nil {
+		panic(err)
+	}
 
 	repositories := bizSetup.SetupRepositories(db)
 	controllers := restSetup.SetupControllers(repositories)

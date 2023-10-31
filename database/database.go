@@ -1,6 +1,7 @@
 package database
 
 import (
+	"database/sql"
 	"fmt"
 	"todo/config"
 
@@ -22,4 +23,13 @@ func Migrate(dbConfig config.DbConfig, path string) error {
 		return err
 	}
 	return nil
+}
+
+func SetupDb(config config.DbConfig) (*sql.DB, error) {
+	connectionString := config.GetConnectionString()
+	db, err := sql.Open("postgres", connectionString)
+	if err != nil {
+		return nil, err
+	}
+	return db, nil
 }

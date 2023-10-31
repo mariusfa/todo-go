@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-type PingController struct {}
+type PingController struct{}
 
 func (tc *PingController) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{

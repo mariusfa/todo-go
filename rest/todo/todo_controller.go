@@ -1,9 +1,9 @@
 package todo
 
 import (
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"todo/biz/todo"
-	"github.com/gin-gonic/gin"
 )
 
 type TodoController struct {
