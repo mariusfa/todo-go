@@ -11,10 +11,11 @@ import (
 
 func TestTodoGetRoute(t *testing.T) {
 	repositories := bizSetup.SetupRepositoriesFake()
-	todoFakeRepo := repositories.TodoRepository.(*todo.TodoRepositoryFake)
-	todoFakeRepo.Todos = []todo.Todo{{Task: "Task 1"}}
 	controllers := SetupControllers(repositories)
 	router := SetupRoutes(controllers)
+
+	todoFakeRepo := repositories.TodoRepository.(*todo.TodoRepositoryFake)
+	todoFakeRepo.Todos = []todo.Todo{{Task: "Task 1"}}
 
 	response := httptest.NewRecorder()
 	request, _ := http.NewRequest("GET", "/todo", nil)
