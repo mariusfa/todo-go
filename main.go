@@ -1,10 +1,9 @@
 package main
 
 import (
-	restSetup "todo/rest/setup"
 	bizSetup "todo/biz/setup"
+	restSetup "todo/rest/setup"
 )
-
 
 func main() {
 	db := SetupDB()
