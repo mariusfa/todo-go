@@ -1,4 +1,4 @@
-package setup
+package routes
 
 import (
 	"todo/rest/controllers"
