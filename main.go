@@ -4,6 +4,7 @@ import (
 	bizSetup "todo/biz/setup"
 	"todo/config"
 	"todo/database"
+	"todo/rest/controllers"
 	restSetup "todo/rest/setup"
 )
 
@@ -16,7 +17,7 @@ func main() {
 	}
 
 	repositories := bizSetup.SetupRepositories(db)
-	controllers := restSetup.SetupControllers(repositories)
+	controllers := controllers.NewControllers(repositories)
 	router := restSetup.SetupRoutes(controllers)
 	router.Run()
 }

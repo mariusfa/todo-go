@@ -12,3 +12,7 @@ func (tc *PingController) Get(c *gin.Context) {
 		"message": "pong",
 	})
 }
+
+func NewPingController() PingController {
+	return PingController{}
+}
