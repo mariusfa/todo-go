@@ -5,13 +5,13 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-	bizSetup "todo/biz/setup"
+	"todo/biz/repositories"
 	"todo/biz/todo"
 	"todo/rest/controllers"
 )
 
 func TestTodoGetRoute(t *testing.T) {
-	repositories := bizSetup.SetupRepositoriesFake()
+	repositories := repositories.NewRepositoriesFake()
 	controllers := controllers.NewControllers(repositories)
 	router := SetupRoutes(controllers)
 
@@ -32,7 +32,7 @@ func TestTodoGetRoute(t *testing.T) {
 }
 
 func TestTodoPostRoute(t *testing.T) {
-	repositories := bizSetup.SetupRepositoriesFake()
+	repositories := repositories.NewRepositoriesFake()
 	controllers := controllers.NewControllers(repositories)
 	router := SetupRoutes(controllers)
 

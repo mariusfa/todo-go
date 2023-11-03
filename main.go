@@ -1,7 +1,7 @@
 package main
 
 import (
-	bizSetup "todo/biz/setup"
+	"todo/biz/repositories"
 	"todo/config"
 	"todo/database"
 	"todo/rest/controllers"
@@ -16,7 +16,7 @@ func main() {
 		panic(err)
 	}
 
-	repositories := bizSetup.SetupRepositories(db)
+	repositories := repositories.NewRepositories(db)
 	controllers := controllers.NewControllers(repositories)
 	router := routes.SetupRoutes(controllers)
 	router.Run()

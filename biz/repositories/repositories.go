@@ -1,4 +1,4 @@
-package setup
+package repositories
 
 import (
 	"database/sql"
@@ -9,13 +9,13 @@ type Repositories struct {
 	TodoRepository todo.TodoRepositoryContract
 }
 
-func SetupRepositories(db *sql.DB) Repositories {
+func NewRepositories(db *sql.DB) Repositories {
 	return Repositories{
 		TodoRepository: todo.NewTodoRepository(db),
 	}
 }
 
-func SetupRepositoriesFake() Repositories {
+func NewRepositoriesFake() Repositories {
 	return Repositories{
 		TodoRepository: todo.NewTodoRepositoryFake(),
 	}
