@@ -9,8 +9,8 @@ type Repositories struct {
 	TodoRepository todo.TodoRepositoryContract
 }
 
-func NewRepositories(db *sql.DB) Repositories {
-	return Repositories{
+func NewRepositories(db *sql.DB) *Repositories {
+	return &Repositories{
 		TodoRepository: todo.NewTodoRepository(db),
 	}
 }
