@@ -12,12 +12,12 @@ type TodoRepository struct {
 }
 
 func (todoRepository *TodoRepository) Insert(task string) error {
-	_, err := todoRepository.db.Exec("INSERT INTO todos (task) VALUES ($1)", task)
+	_, err := todoRepository.db.Exec("INSERT INTO todoschema.todos (task) VALUES ($1)", task)
 	return err
 }
 
 func (todoRepository *TodoRepository) GetAll() ([]Todo, error) {
-	rows, err := todoRepository.db.Query("SELECT task FROM todos")
+	rows, err := todoRepository.db.Query("SELECT task FROM todoschema.todos")
 	if err != nil {
 		return nil, err
 	}

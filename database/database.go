@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"todo/config"
 
 	"github.com/golang-migrate/migrate/v4"
@@ -14,7 +15,8 @@ import (
 func Migrate(dbConfig config.DbConfig, path string) error {
 	connectionString := dbConfig.GetConnectionString()
 
-	basePath := fmt.Sprintf("file://%s/base", path)
+	basePath := fmt.Sprintf("file://%s/", path)
+	log.Println(basePath)
 	m, err := migrate.New(basePath, connectionString)
 	if err != nil {
 		return err

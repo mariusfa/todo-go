@@ -53,6 +53,7 @@ func GetAppTestConfig(migrationConfig config.DbConfig) config.DbConfig {
 		Host:     migrationConfig.Host,
 		Port:     migrationConfig.Port,
 		User:     "appuser",
-		Password: "apppassword",
+		Password: "password",
+		DbName:   "test",
 	}
 }
