@@ -15,8 +15,8 @@ func NewRepositories(db *sql.DB) Repositories {
 	}
 }
 
-func NewRepositoriesFake() Repositories {
-	return Repositories{
+func NewRepositoriesFake() *Repositories {
+	return &Repositories{
 		TodoRepository: todo.NewTodoRepositoryFake(),
 	}
 }

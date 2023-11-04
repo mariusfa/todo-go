@@ -13,6 +13,6 @@ func (tc *PingController) Get(c *gin.Context) {
 	})
 }
 
-func NewPingController() PingController {
-	return PingController{}
+func NewPingController() *PingController {
+	return &PingController{}
 }

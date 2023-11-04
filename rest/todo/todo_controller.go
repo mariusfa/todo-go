@@ -33,6 +33,6 @@ func (tc *TodoController) Post(c *gin.Context) {
 	c.Status(http.StatusCreated)
 }
 
-func NewTodoController(todoRepository todo.TodoRepositoryContract) TodoController {
-	return TodoController{todoRepository: todoRepository}
+func NewTodoController(todoRepository todo.TodoRepositoryContract) *TodoController {
+	return &TodoController{todoRepository: todoRepository}
 }
