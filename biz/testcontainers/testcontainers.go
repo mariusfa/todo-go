@@ -3,12 +3,13 @@ package testcontainers
 import (
 	"context"
 	"time"
+	"todo/config"
 
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
 
-func CreateTestContainer() (testcontainers.Container, error) {
+func CreatePostgresContainer() (testcontainers.Container, error) {
 	req := testcontainers.ContainerRequest{
 		Image:        "postgres:15-alpine",
 		ExposedPorts: []string{"5432/tcp"},
@@ -27,4 +28,31 @@ func CreateTestContainer() (testcontainers.Container, error) {
 		return nil, err
 	}
 	return container, nil
+}
+
+func GetMigrationTestConfig(container testcontainers.Container) (config.DbConfig, error) {
+	host, err := container.Host(context.Background())
+	if err != nil {
+		return config.DbConfig{}, err
+	}
+	port, err := container.MappedPort(context.Background(), "5432")
+	if err != nil {
+		return config.DbConfig{}, err
+	}
+	return config.DbConfig{
+		Host:     host,
+		Port:     port.Int(),
+		User:     "test",
+		Password: "test",
+		DbName:   "test",
+	}, nil
+}
+
+func GetAppTestConfig(migrationConfig config.DbConfig) config.DbConfig {
+	return config.DbConfig{
+		Host:     migrationConfig.Host,
+		Port:     migrationConfig.Port,
+		User:     "appuser",
+		Password: "apppassword",
+	}
 }
