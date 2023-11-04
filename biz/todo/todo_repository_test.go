@@ -42,6 +42,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestInsert(t *testing.T) {
+	// given
 	db, err := database.SetupDb(todoDbConfig)
 	if err != nil {
 		t.Fatal(err)
@@ -49,11 +50,13 @@ func TestInsert(t *testing.T) {
 	defer db.Close()
 	todoRepository := NewTodoRepository(db)
 
+	// when
 	err = todoRepository.Insert("Test")
 	if err != nil {
 		t.Fatal(err)
 	}
 
+	// then
 	var todo Todo
 	if err := db.QueryRow("SELECT task FROM todoschema.todos").Scan(&todo.Task); err != nil {
 		t.Errorf("Failed to get task: %v", err)
@@ -62,6 +65,7 @@ func TestInsert(t *testing.T) {
 		t.Errorf("Expected task to be 'Test', got '%s'", todo.Task)
 	}
 
+	// cleanup
 	if err := clearTodoTable(db); err != nil {
 		t.Fatal(err)
 	}
