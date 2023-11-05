@@ -8,24 +8,24 @@ import (
 	"todo/biz/repositories"
 	"todo/biz/services"
 	"todo/rest/controllers"
+	"todo/rest/routes"
 )
 
-func TestGetUsers(t *testing.T) {
-	// Setup
+func TestGetPing(t *testing.T) {
 	repositories := repositories.NewRepositoriesFake()
 	adapters := adapters.NewAdapterFakes()
 	services := services.NewServices(repositories, adapters)
 	controllers := controllers.NewControllers(services)
-	router := SetupRoutes(controllers)
+	router := routes.SetupRoutes(controllers)
 
 	response := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/user", nil)
+	request, _ := http.NewRequest("GET", "/ping", nil)
 	router.ServeHTTP(response, request)
 
 	if response.Code != http.StatusOK {
 		t.Errorf("Response code is %v", response.Code)
 	}
-	expected := `[{"id":1,"name":"User 1"},{"id":2,"name":"User 2"},{"id":3,"name":"User 3"}]`
+	expected := `{"message":"pong"}`
 	if response.Body.String() != expected {
 		t.Errorf("Response body is %v", response.Body.String())
 	}
