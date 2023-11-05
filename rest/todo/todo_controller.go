@@ -7,7 +7,7 @@ import (
 )
 
 type TodoController struct {
-	todoService   *todo.TodoService
+	todoService *todo.TodoService
 }
 
 func (tc *TodoController) Get(c *gin.Context) {

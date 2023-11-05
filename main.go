@@ -1,6 +1,7 @@
 package main
 
 import (
+	"todo/biz/adapters"
 	"todo/biz/repositories"
 	"todo/biz/services"
 	"todo/config"
@@ -18,7 +19,8 @@ func main() {
 	}
 
 	repositories := repositories.NewRepositories(db)
-	services := services.NewServices(repositories)
+	adapters := adapters.NewAdapterFakes()
+	services := services.NewServices(repositories, adapters)
 	controllers := controllers.NewControllers(services)
 	router := routes.SetupRoutes(controllers)
 	router.Run()

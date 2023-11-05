@@ -5,6 +5,7 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"todo/biz/adapters"
 	"todo/biz/repositories"
 	"todo/biz/services"
 	"todo/biz/todo"
@@ -13,7 +14,8 @@ import (
 
 func TestTodoGetRoute(t *testing.T) {
 	repositories := repositories.NewRepositoriesFake()
-	services := services.NewServices(repositories)
+	adapters := adapters.NewAdapterFakes()
+	services := services.NewServices(repositories, adapters)
 	controllers := controllers.NewControllers(services)
 	router := SetupRoutes(controllers)
 
@@ -35,7 +37,8 @@ func TestTodoGetRoute(t *testing.T) {
 
 func TestTodoPostRoute(t *testing.T) {
 	repositories := repositories.NewRepositoriesFake()
-	services := services.NewServices(repositories)
+	adapters := adapters.NewAdapterFakes()
+	services := services.NewServices(repositories, adapters)
 	controllers := controllers.NewControllers(services)
 	router := SetupRoutes(controllers)
 

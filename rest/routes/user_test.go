@@ -10,7 +10,8 @@ import (
 	"todo/rest/controllers"
 )
 
-func TestGetPing(t *testing.T) {
+func TestGetUsers(t *testing.T) {
+	// Setup
 	repositories := repositories.NewRepositoriesFake()
 	adapters := adapters.NewAdapterFakes()
 	services := services.NewServices(repositories, adapters)
@@ -18,13 +19,13 @@ func TestGetPing(t *testing.T) {
 	router := SetupRoutes(controllers)
 
 	response := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/ping", nil)
+	request, _ := http.NewRequest("GET", "/user", nil)
 	router.ServeHTTP(response, request)
 
 	if response.Code != http.StatusOK {
 		t.Errorf("Response code is %v", response.Code)
 	}
-	expected := `{"message":"pong"}`
+	expected := `[{"id":1,"name":"User 1"},{"id":2,"name":"User 2"},{"id":3,"name":"User 3"}]`
 	if response.Body.String() != expected {
 		t.Errorf("Response body is %v", response.Body.String())
 	}
