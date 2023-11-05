@@ -5,20 +5,12 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-	"todo/biz/adapters"
-	"todo/biz/repositories"
-	"todo/biz/services"
+	"todo/app"
 	"todo/biz/todo"
-	"todo/rest/controllers"
-	"todo/rest/routes"
 )
 
 func TestTodoGetRoute(t *testing.T) {
-	repositories := repositories.NewRepositoriesFake()
-	adapters := adapters.NewAdapterFakes()
-	services := services.NewServices(repositories, adapters)
-	controllers := controllers.NewControllers(services)
-	router := routes.SetupRoutes(controllers)
+	router, repositories := app.AppTestSetup()
 
 	todoFakeRepo := repositories.TodoRepository.(*todo.TodoRepositoryFake)
 	todoFakeRepo.Todos = []todo.Todo{todo.NewTodo(0, "Task 1")}
@@ -37,11 +29,7 @@ func TestTodoGetRoute(t *testing.T) {
 }
 
 func TestTodoPostRoute(t *testing.T) {
-	repositories := repositories.NewRepositoriesFake()
-	adapters := adapters.NewAdapterFakes()
-	services := services.NewServices(repositories, adapters)
-	controllers := controllers.NewControllers(services)
-	router := routes.SetupRoutes(controllers)
+	router, repositories := app.AppTestSetup()
 
 	requestBody := strings.NewReader(`{"task": "Task 4"}`)
 	response := httptest.NewRecorder()

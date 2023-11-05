@@ -4,20 +4,11 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"todo/biz/adapters"
-	"todo/biz/repositories"
-	"todo/biz/services"
-	"todo/rest/controllers"
-	"todo/rest/routes"
+	"todo/app"
 )
 
 func TestGetUsers(t *testing.T) {
-	// Setup
-	repositories := repositories.NewRepositoriesFake()
-	adapters := adapters.NewAdapterFakes()
-	services := services.NewServices(repositories, adapters)
-	controllers := controllers.NewControllers(services)
-	router := routes.SetupRoutes(controllers)
+	router, _ := app.AppTestSetup()
 
 	response := httptest.NewRecorder()
 	request, _ := http.NewRequest("GET", "/user", nil)
