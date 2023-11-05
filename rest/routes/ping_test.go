@@ -5,12 +5,14 @@ import (
 	"net/http/httptest"
 	"testing"
 	"todo/biz/repositories"
+	"todo/biz/services"
 	"todo/rest/controllers"
 )
 
 func TestGetPing(t *testing.T) {
 	repositories := repositories.NewRepositoriesFake()
-	controllers := controllers.NewControllers(repositories)
+	services := services.NewServices(repositories)
+	controllers := controllers.NewControllers(services)
 	router := SetupRoutes(controllers)
 
 	response := httptest.NewRecorder()

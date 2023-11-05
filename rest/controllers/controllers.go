@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"todo/biz/repositories"
+	"todo/biz/services"
 	"todo/rest/ping"
 	"todo/rest/todo"
 )
@@ -11,9 +11,9 @@ type Controllers struct {
 	TodoController *todo.TodoController
 }
 
-func NewControllers(repos *repositories.Repositories) *Controllers {
+func NewControllers(services *services.Services) *Controllers {
 	return &Controllers{
 		PingController: ping.NewPingController(),
-		TodoController: todo.NewTodoController(repos.TodoRepository),
+		TodoController: todo.NewTodoController(services.TodoService),
 	}
 }

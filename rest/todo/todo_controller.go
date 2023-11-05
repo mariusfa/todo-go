@@ -7,11 +7,11 @@ import (
 )
 
 type TodoController struct {
-	todoRepository todo.TodoRepositoryContract
+	todoService   *todo.TodoService
 }
 
 func (tc *TodoController) Get(c *gin.Context) {
-	todos, err := tc.todoRepository.GetAll()
+	todos, err := tc.todoService.GetAll()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Internal server error",
@@ -29,11 +29,11 @@ func (tc *TodoController) Post(c *gin.Context) {
 		})
 		return
 	}
-	tc.todoRepository.Insert(ToDomain(todoRequestDTO))
+	tc.todoService.Create(ToDomain(todoRequestDTO))
 
 	c.Status(http.StatusCreated)
 }
 
-func NewTodoController(todoRepository todo.TodoRepositoryContract) *TodoController {
-	return &TodoController{todoRepository: todoRepository}
+func NewTodoController(todoService *todo.TodoService) *TodoController {
+	return &TodoController{todoService: todoService}
 }

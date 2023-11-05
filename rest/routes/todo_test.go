@@ -6,13 +6,15 @@ import (
 	"strings"
 	"testing"
 	"todo/biz/repositories"
+	"todo/biz/services"
 	"todo/biz/todo"
 	"todo/rest/controllers"
 )
 
 func TestTodoGetRoute(t *testing.T) {
 	repositories := repositories.NewRepositoriesFake()
-	controllers := controllers.NewControllers(repositories)
+	services := services.NewServices(repositories)
+	controllers := controllers.NewControllers(services)
 	router := SetupRoutes(controllers)
 
 	todoFakeRepo := repositories.TodoRepository.(*todo.TodoRepositoryFake)
@@ -33,7 +35,8 @@ func TestTodoGetRoute(t *testing.T) {
 
 func TestTodoPostRoute(t *testing.T) {
 	repositories := repositories.NewRepositoriesFake()
-	controllers := controllers.NewControllers(repositories)
+	services := services.NewServices(repositories)
+	controllers := controllers.NewControllers(services)
 	router := SetupRoutes(controllers)
 
 	requestBody := strings.NewReader(`{"task": "Task 4"}`)
