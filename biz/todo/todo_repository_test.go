@@ -35,7 +35,6 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("Migrated")
 
 	code := m.Run()
 	os.Exit(code)
