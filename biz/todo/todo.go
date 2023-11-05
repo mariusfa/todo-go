@@ -1,5 +1,10 @@
 package todo
 
 type Todo struct {
-	Task string `json:"task"`
+	Id   int
+	Task string
+}
+
+func NewTodo(id int, task string) Todo {
+	return Todo{Id: id, Task: task}
 }

@@ -3,7 +3,7 @@ package todo
 import "database/sql"
 
 type TodoRepositoryContract interface {
-	Insert(string) error
+	Insert(Todo) error
 	GetAll() ([]Todo, error)
 }
 
@@ -11,8 +11,8 @@ type TodoRepository struct {
 	db *sql.DB
 }
 
-func (todoRepository *TodoRepository) Insert(task string) error {
-	_, err := todoRepository.db.Exec("INSERT INTO todoschema.todos (task) VALUES ($1)", task)
+func (todoRepository *TodoRepository) Insert(todo Todo) error {
+	_, err := todoRepository.db.Exec("INSERT INTO todoschema.todos (task) VALUES ($1)", todo.Task)
 	return err
 }
 

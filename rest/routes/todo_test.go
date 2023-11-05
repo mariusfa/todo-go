@@ -16,7 +16,7 @@ func TestTodoGetRoute(t *testing.T) {
 	router := SetupRoutes(controllers)
 
 	todoFakeRepo := repositories.TodoRepository.(*todo.TodoRepositoryFake)
-	todoFakeRepo.Todos = []todo.Todo{{Task: "Task 1"}}
+	todoFakeRepo.Todos = []todo.Todo{todo.NewTodo(0, "Task 1")}
 
 	response := httptest.NewRecorder()
 	request, _ := http.NewRequest("GET", "/todo", nil)
@@ -25,7 +25,7 @@ func TestTodoGetRoute(t *testing.T) {
 	if response.Code != http.StatusOK {
 		t.Errorf("Response code is %v", response.Code)
 	}
-	expected := `[{"task":"Task 1"}]`
+	expected := `[{"id":0,"task":"Task 1"}]`
 	if response.Body.String() != expected {
 		t.Errorf("Response body is %v", response.Body.String())
 	}

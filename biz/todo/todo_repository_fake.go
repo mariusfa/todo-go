@@ -4,8 +4,7 @@ type TodoRepositoryFake struct {
 	Todos []Todo
 }
 
-func (todoRepository *TodoRepositoryFake) Insert(task string) error {
-	todo := Todo{Task: task}
+func (todoRepository *TodoRepositoryFake) Insert(todo Todo) error {
 	todoRepository.Todos = append(todoRepository.Todos, todo)
 	return nil
 }

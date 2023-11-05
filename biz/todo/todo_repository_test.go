@@ -50,7 +50,8 @@ func TestInsert(t *testing.T) {
 	todoRepository := NewTodoRepository(db)
 
 	// when
-	err = todoRepository.Insert("Test")
+	todoToInsert := NewTodo(0, "Test")
+	err = todoRepository.Insert(todoToInsert)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -79,7 +80,8 @@ func TestGetAll(t *testing.T) {
 	defer db.Close()
 	todoRepository := NewTodoRepository(db)
 
-	err = todoRepository.Insert("Test")
+	todoToInsert := NewTodo(0, "Test")
+	err = todoRepository.Insert(todoToInsert)
 	if err != nil {
 		t.Fatal(err)
 	}

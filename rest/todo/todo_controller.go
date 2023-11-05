@@ -18,18 +18,19 @@ func (tc *TodoController) Get(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, todos)
+	c.JSON(http.StatusOK, FromDomainList(todos))
 }
 
 func (tc *TodoController) Post(c *gin.Context) {
-	var todo todo.Todo
-	if err := c.ShouldBindJSON(&todo); err != nil {
+	var todoRequestDTO TodoRequestDTO
+	if err := c.ShouldBindJSON(&todoRequestDTO); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
-	tc.todoRepository.Insert(todo.Task)
+	tc.todoRepository.Insert(ToDomain(todoRequestDTO))
+
 	c.Status(http.StatusCreated)
 }
 
