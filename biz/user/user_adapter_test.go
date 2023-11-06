@@ -15,9 +15,7 @@ func TestUserAdapterGet(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusOK, httpmock.File("./users.json")))
 
 
-	// fetch json using http file
-
-	// unmarshal json
+	// fetch json using User adapter
 
 	// assert
 
