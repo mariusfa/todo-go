@@ -11,3 +11,9 @@ func NewAdapterFakes() *Adapters {
 		UserAdapter: &user.UserAdapterFake{},
 	}
 }
+
+func NewAdapters() *Adapters {
+	return &Adapters{
+		UserAdapter: &user.UserAdapter{},
+	}
+}

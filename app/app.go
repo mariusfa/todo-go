@@ -13,7 +13,7 @@ import (
 
 func AppSetup(db *sql.DB) *gin.Engine {
 	repositories := repositories.NewRepositories(db)
-	adapters := adapters.NewAdapterFakes()
+	adapters := adapters.NewAdapters()
 	services := services.NewServices(repositories, adapters)
 	controllers := controllers.NewControllers(services)
 	return routes.SetupRoutes(controllers)
