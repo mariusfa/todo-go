@@ -12,7 +12,7 @@ func TestUserAdapterGet(t *testing.T) {
 	defer httpmock.DeactivateAndReset()
 
 	httpmock.RegisterResponder("GET", "https://jsonplaceholder.typicode.com/users",
-		httpmock.NewJsonResponderOrPanic(http.StatusOK, httpmock.File("./users.json")))
+		httpmock.NewJsonResponderOrPanic(http.StatusOK, httpmock.File("./mocks/users.json")))
 
 	userAdapter := NewUserAdapter()
 	users, err := userAdapter.GetAll()
