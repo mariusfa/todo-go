@@ -6,7 +6,8 @@ import (
 	"time"
 )
 
-func FetchJson[T any](dto *T, url string, headers map[string]string) error {
+
+func FetchJson(dto interface{}, url string, headers map[string]string) error {
 	client := &http.Client{Timeout: 5 * time.Second}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
