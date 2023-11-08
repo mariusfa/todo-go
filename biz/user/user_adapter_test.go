@@ -14,7 +14,6 @@ func TestUserAdapterGet(t *testing.T) {
 	httpmock.RegisterResponder("GET", "https://jsonplaceholder.typicode.com/users",
 		httpmock.NewJsonResponderOrPanic(http.StatusOK, httpmock.File("./users.json")))
 
-
 	userAdapter := NewUserAdapter()
 	users, err := userAdapter.GetAll()
 	if err != nil {
@@ -33,4 +32,3 @@ func TestUserAdapterGet(t *testing.T) {
 		t.Errorf("Expected Name John Doe, got %v", users[0].Name)
 	}
 }
-

@@ -2,7 +2,7 @@ package user
 
 import "todo/api"
 
-type UserAdapter struct {}
+type UserAdapter struct{}
 
 func (u *UserAdapter) GetAll() ([]User, error) {
 	var users []UserDTO
