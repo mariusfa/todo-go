@@ -7,7 +7,9 @@ import (
 )
 
 func main() {
-	database.Migrate(config.GetMigrationDbConfig(), "./migrations")
+	if err := database.Migrate(config.GetMigrationDbConfig(), "./migrations"); err != nil {
+		panic(err)
+	}
 
 	db, err := database.SetupDb(config.GetAppDbConfig())
 	if err != nil {
