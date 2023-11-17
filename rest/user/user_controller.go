@@ -7,16 +7,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UserController struct {
+type Controller struct {
 	userService *user.UserService
 }
 
-func NewUserController(userService *user.UserService) *UserController {
-	return &UserController{userService: userService}
+func NewController(userService *user.UserService) *Controller {
+	return &Controller{userService: userService}
 }
 
-func (u *UserController) Get(c *gin.Context) {
-	users, err := u.userService.GetAll()
+func (ct *Controller) Get(c *gin.Context) {
+	users, err := ct.userService.GetAll()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Internal server error",

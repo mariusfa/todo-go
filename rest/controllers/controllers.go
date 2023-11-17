@@ -10,13 +10,13 @@ import (
 type Controllers struct {
 	Ping           *ping.Controller
 	TodoController *todo.TodoController
-	UserController *user.UserController
+	User           *user.Controller
 }
 
 func NewControllers(services *services.Services) *Controllers {
 	return &Controllers{
 		Ping:           ping.NewController(),
 		TodoController: todo.NewTodoController(services.TodoService),
-		UserController: user.NewUserController(services.UserService),
+		User:           user.NewController(services.UserService),
 	}
 }
