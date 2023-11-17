@@ -1,18 +1,19 @@
 package ping
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-type PingController struct{}
+type Controller struct{}
 
-func (tc *PingController) Get(c *gin.Context) {
+func (ct *Controller) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "pong",
 	})
 }
 
-func NewPingController() *PingController {
-	return &PingController{}
+func NewController() *Controller {
+	return &Controller{}
 }
