@@ -1,16 +1,15 @@
-package routes
+package app
 
 import (
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
-	"todo/app"
 	"todo/biz/todo"
 )
 
 func TestTodoGetRoute(t *testing.T) {
-	router, repositories := app.AppTestSetup()
+	router, repositories := AppTestSetup()
 
 	todoFakeRepo := repositories.TodoRepository.(*todo.TodoRepositoryFake)
 	todoFakeRepo.Todos = []todo.Todo{todo.NewTodo(0, "Task 1")}
@@ -29,7 +28,7 @@ func TestTodoGetRoute(t *testing.T) {
 }
 
 func TestTodoPostRoute(t *testing.T) {
-	router, repositories := app.AppTestSetup()
+	router, repositories := AppTestSetup()
 
 	requestBody := strings.NewReader(`{"task": "Task 4"}`)
 	response := httptest.NewRecorder()

@@ -1,14 +1,13 @@
-package routes
+package app
 
 import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"todo/app"
 )
 
 func TestGetUsers(t *testing.T) {
-	router, _ := app.AppTestSetup()
+	router, _ := AppTestSetup()
 
 	response := httptest.NewRecorder()
 	request, _ := http.NewRequest("GET", "/user", nil)
