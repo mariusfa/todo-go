@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
-	"todo/config"
 	"path/filepath"
 	"text/template"
+	"todo/config"
 
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
@@ -21,7 +21,7 @@ func Migrate(dbConfig config.DbConfig, path string) error {
 
 	connectionString := dbConfig.GetConnectionString()
 
-	basePath := fmt.Sprintf("file://%s/", path + "/resolved")
+	basePath := fmt.Sprintf("file://%s/", path+"/resolved")
 	m, err := migrate.New(basePath, connectionString)
 	if err != nil {
 		return err
@@ -40,7 +40,6 @@ func SetupDb(config config.DbConfig) (*sql.DB, error) {
 	}
 	return db, nil
 }
-
 
 func resolveTemplates(path string) error {
 	files, err := getFiles(path)
@@ -71,45 +70,45 @@ func getFiles(path string) ([]string, error) {
 }
 
 func resolveFile(file string, path string) error {
-		// read file
-		contentBytes, err := os.ReadFile(filepath.Join(path, "templates", file))
-		if err != nil {
-			return err
-		}
+	// read file
+	contentBytes, err := os.ReadFile(filepath.Join(path, "templates", file))
+	if err != nil {
+		return err
+	}
 
-		// create new template
-		tmpl, err := template.New(file).Parse(string(contentBytes))
-		if err != nil {
-			return err
-		}
+	// create new template
+	tmpl, err := template.New(file).Parse(string(contentBytes))
+	if err != nil {
+		return err
+	}
 
-		// delete if resolved directory exists
-		if _, err := os.Stat(filepath.Join(path, "resolved")); err == nil {
-			os.RemoveAll(filepath.Join(path, "resolved"))
-		}
+	// delete if resolved directory exists
+	if _, err := os.Stat(filepath.Join(path, "resolved")); err == nil {
+		os.RemoveAll(filepath.Join(path, "resolved"))
+	}
 
-		// create resolved directory if it doesn't exist
-		if _, err := os.Stat(filepath.Join(path, "resolved")); os.IsNotExist(err) {
-			os.Mkdir(filepath.Join(path, "resolved"), 0755)
-		}
+	// create resolved directory if it doesn't exist
+	if _, err := os.Stat(filepath.Join(path, "resolved")); os.IsNotExist(err) {
+		os.Mkdir(filepath.Join(path, "resolved"), 0755)
+	}
 
-		// create new file to write resolved template
-		resolvedFile, err := os.Create(filepath.Join(path, "resolved", file))
-		if err != nil {
-			return err
-		}
-		defer resolvedFile.Close()
+	// create new file to write resolved template
+	resolvedFile, err := os.Create(filepath.Join(path, "resolved", file))
+	if err != nil {
+		return err
+	}
+	defer resolvedFile.Close()
 
-		// create a map of data to replace in the template
-		data := map[string]string{
-			"User":     "appuser",
-			"Password": "password",
-		}
+	// create a map of data to replace in the template
+	data := map[string]string{
+		"User":     "appuser",
+		"Password": "password",
+	}
 
-		// execute template with data and write to file
-		err = tmpl.Execute(resolvedFile, data)
-		if err != nil {
-			return err
-		}
-		return nil
+	// execute template with data and write to file
+	err = tmpl.Execute(resolvedFile, data)
+	if err != nil {
+		return err
+	}
+	return nil
 }
