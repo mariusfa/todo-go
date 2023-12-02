@@ -15,6 +15,10 @@ func NewController(userService *user.UserService) *Controller {
 	return &Controller{userService: userService}
 }
 
+func (ct *Controller) RegisterRoutes(router *gin.Engine) {
+	router.GET("/user", ct.Get)
+}
+
 func (ct *Controller) Get(c *gin.Context) {
 	users, err := ct.userService.GetAll()
 	if err != nil {

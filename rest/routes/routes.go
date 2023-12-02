@@ -11,6 +11,6 @@ func SetupRoutes(controllers *controllers.Controllers) *gin.Engine {
 	controllers.Ping.RegisterRoutes(router)
 	router.GET("/todo", controllers.TodoController.Get)
 	router.POST("/todo", controllers.TodoController.Post)
-	router.GET("/user", controllers.User.Get)
+	controllers.User.RegisterRoutes(router)
 	return router
 }
