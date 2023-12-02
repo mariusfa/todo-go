@@ -8,6 +8,10 @@ import (
 
 type Controller struct{}
 
+func (ct *Controller) RegisterRoutes(router *gin.Engine) {
+	router.GET("/ping", ct.Get)
+}
+
 func (ct *Controller) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "pong",

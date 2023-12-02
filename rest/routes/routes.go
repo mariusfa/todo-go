@@ -8,7 +8,7 @@ import (
 
 func SetupRoutes(controllers *controllers.Controllers) *gin.Engine {
 	router := gin.Default()
-	router.GET("/ping", controllers.Ping.Get)
+	controllers.Ping.RegisterRoutes(router)
 	router.GET("/todo", controllers.TodoController.Get)
 	router.POST("/todo", controllers.TodoController.Post)
 	router.GET("/user", controllers.User.Get)
