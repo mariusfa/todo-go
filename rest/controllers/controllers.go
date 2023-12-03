@@ -8,15 +8,15 @@ import (
 )
 
 type Controllers struct {
-	Ping           *ping.Controller
-	TodoController *todo.TodoController
-	User           *user.Controller
+	Ping *ping.Controller
+	Todo *todo.TodoController
+	User *user.Controller
 }
 
 func NewControllers(services *services.Services) *Controllers {
 	return &Controllers{
-		Ping:           ping.NewController(),
-		TodoController: todo.NewTodoController(services.TodoService),
-		User:           user.NewController(services.UserService),
+		Ping: ping.NewController(),
+		Todo: todo.NewTodoController(services.TodoService),
+		User: user.NewController(services.UserService),
 	}
 }

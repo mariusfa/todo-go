@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
 func TestGetPing(t *testing.T) {
 	router := gin.New()
 	pingController := NewController()

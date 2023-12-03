@@ -10,6 +10,11 @@ type TodoController struct {
 	todoService *todo.TodoService
 }
 
+func (tc *TodoController) RegisterRoutes(router *gin.Engine) {
+	router.GET("/todo", tc.Get)
+	router.POST("/todo", tc.Post)
+}
+
 func (tc *TodoController) Get(c *gin.Context) {
 	todos, err := tc.todoService.GetAll()
 	if err != nil {
